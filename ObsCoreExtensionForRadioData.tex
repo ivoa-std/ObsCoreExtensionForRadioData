@@ -465,7 +465,153 @@ In the registry, the two service tables will be described in the tableset of the
 \end{longtable}
 \end{landscape}
 
+\appendix
+\section{ADQL usecases}
+\subsection{Use case 1.1}
+\textit{Any raw interferometry observation containing target Fornax cluster.}\\
+\\
+Show me all  observation identifiers satisfying:\\
+I. DataType = visibility \\
+II. Target Name = Fornax Cluster \\
+\begin{verbatim}
+      SELECT obs_id FROM ivoa.ObscoreRadioExtended
+      WHERE dataproduct_type = 'visibility'
+      target_name = 'Fornax cluster'
+\end{verbatim}
+\subsection{Use case 1.2}
+\textit{Any  dataset with minimum field of view larger than 0.5 degree.}\\
+\\
+Show me all datasets satisfying:\\
+I. Minimum FOV > 0.5 deg \\
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE fov_min > 0.5 
+\end{verbatim}
+\subsection{Use case 1.3}
+\textit{Any cube  with absolute spectral resolution better than 1 Mhz and spectral range inside the 1 to 1.5 Ghz band.}\\ \\
+Show me all datasets satisfying:\\
+I. Product type is cube \\
+II. spectral resolution better than 1Mhz \\
+III. lower spectral limit > 1Ghz \\
+IV. higher spectral limit < 1.5Ghz 
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE dataproduct_type = 'cube' AND
+      f_resolution < 1000 AND
+      f_min > 1000 AND
+      f_max < 1500
+\end{verbatim}
+\subsection{Use case 1.4}
+\textit{Any low frequency image or cube  defined as smaller than 1 Ghz.}\\ \\
+Show me all datasets satisfying:\\
+I. Product type is image or cube \\
+II. higher spectral limit < 1Ghz
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE (dataproduct_type = 'image' OR
+      dataproduct_type = 'cube') AND
+      f_max  < 1000
+\end{verbatim}
+\subsection{Use case 1.5}
+\textit{Any visibility dataset  where  maximum angular scale is larger than 0.5degrees.}\\ \\
+Show me all datasets satisfying:\\
+I. Product type is visibility \\
+II. Maximum angular scale  >  0.5 deg 
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE dataproduct_type = 'visibility' AND
+      max_angular_scale > 0.5 
+\end{verbatim}
+\subsection{Use case 1.6}
+\textit{Any single dish  dataset  in raster mode around 3C 273.}\\ \\
+Show me all datasets satisfying:\\
+I. Instrument type is Single dish \\
+II. Scan mode is raster \\
+III. Target name = 3C 273 or \\
+IV. position inside 3 arcmin around  	187.2779159404900 +02.0523882305500
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE instrument_type = 'SD' AND
+      scan_mode = 'raster' AND
+      (target_name = '3C 273' OR
+       CONTAINS(POINT(s_ra,s_dec),CIRCLE(187.2779159404900, +02.0523882305500,0.05)) = 1)     
+\end{verbatim}
 
+\subsection{Use case 1.7}
+\textit{Any single dish or beam forming dataset  with spectral range inside the 500 Mhz - 1Ghz band and in the Coma Cluster.}\\ \\
+Show me all datasets satisfying:\\
+I. Instrument type is Single dish or beam forming \\
+II. lower spectral limit > 500 Mhz \\
+III. higher spectral limit < 1Ghz \\
+IV. position inside 18 arcmin around 194.93502 +27.91246
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE (instrument_type = 'SD' OR
+      instrument_type = 'beamForming') AND
+      CONTAINS(POINT(s_ra,s_dec),CIRCLE(194.93502, +27.91246, 0.3) = 1     
+\end{verbatim}
+
+
+\subsection{Use case 1.8}
+\textit{Any single dish or beam forming dataset  with spectral range inside the 500 Mhz - 1Ghz band and in the Coma Cluster.}\\ \\
+Show me all datasets satisfying:\\
+I. Instrument type is Single dish or beam forming \\
+II. lower spectral limit > 500 Mhz \\
+III. higher spectral limit < 1Ghz \\
+IV. position inside 18 arcmin around 194.93502 +27.91246
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE (instrument_type = 'SD' OR
+      instrument_type = 'beamForming') AND
+      f_min > 500 AND
+      f_max < 1000 AND
+      CONTAINS(POINT(s_ra,s_dec),CIRCLE(194.93502, +27.91246, 0.3) = 1     
+\end{verbatim}
+
+
+\subsection{Use case 1.9}
+\textit{Any visibility data of good quality from th uv distribution point of view.}\\ \\
+Show me all datasets satisfying:\\
+I. Product type = visibility \\
+II. uv distribution filling factor  > 0.7 \\
+III. uv distribtion factor eccentricity  < 0.1 \\
+
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE dataproduct_type = 'visibilty' AND
+      uv_distribution_fill > 0.7 AND
+      uv_distribution_ecc < 0.1  
+\end{verbatim}
+
+
+\subsection{Use case 1.10}
+\textit{Any interferometry data of good quality and significant spatial resolution from the instrumental point of view. }\\ \\
+Show me all datasets satisfying:\\
+I. Instrument type = visibility \\
+II. number of antennae > 40 \\
+III. antenna maximum distance in meters  > 5000 \\
+
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE instrument_type = 'interferometry' AND
+      instrument_ant_number > 40 AND
+      instrument_ant_max_dist > 5000 
+\end{verbatim}
+
+
+\subsection{Use case 1.11}
+\textit{Any timeseries obtained in beam forming mode with tile rsolution better than 0.1 second annd . }\\ \\
+Show me all datasets satisfying:\\
+I. Instrument type = visibility \\
+II. number of antennae > 40 \\
+III. antenna maximum distance in meters  > 5000 \\
+
+\begin{verbatim}
+      SELECT * FROM ivoa.ObscoreRadioExtended
+      WHERE instrument_type = 'interferometry' AND
+      instrument_ant_number > 40 AND
+      instrument_ant_max_dist > 5000 
+\end{verbatim}
 \bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
 \end{document}
