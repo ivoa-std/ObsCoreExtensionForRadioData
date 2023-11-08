@@ -600,17 +600,19 @@ III. antenna maximum distance in meters  > 5000 \\
 
 
 \subsection{Use case 1.11}
-\textit{Any timeseries obtained in beam forming mode with tile rsolution better than 0.1 second annd . }\\ \\
+\textit{Any timeseries obtained in beam forming mode with time resolution better than 0.1 second and time sample maximal duration smaller than 0.05 second. }\\ \\
 Show me all datasets satisfying:\\
-I. Instrument type = visibility \\
-II. number of antennae > 40 \\
-III. antenna maximum distance in meters  > 5000 \\
+I. Instrument type = beam forming\\
+II. Product type = time series  \\
+III. time resolution < 0.1 s\\
+IIV. maximal duration per sample  < 0.05 s \\
 
 \begin{verbatim}
       SELECT * FROM ivoa.ObscoreRadioExtended
-      WHERE instrument_type = 'interferometry' AND
-      instrument_ant_number > 40 AND
-      instrument_ant_max_dist > 5000 
+      WHERE instrument_type = 'beamForming' AND
+      dataproduct_type = 'timeseries' AND
+      t_resolution < 0.1 AND
+      t_exp_max < 0.05 
 \end{verbatim}
 \bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
