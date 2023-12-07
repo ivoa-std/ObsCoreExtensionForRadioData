@@ -21,7 +21,7 @@ IVOA_GROUP = Data Model
 SOURCES = $(DOCNAME).tex
 
 # List of pixel image files to be included in submitted package
-FIGURES = archdiag.png
+FIGURES =
 
 # List of PDF figures (for vector graphics)
 VECTORFIGURES =
