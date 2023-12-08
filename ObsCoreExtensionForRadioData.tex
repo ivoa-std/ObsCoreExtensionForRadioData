@@ -4,8 +4,8 @@
 \newcommand{\xtype}[1]{\texttt{#1}}
 
 \usepackage{listings}
-\lstloadlanguages{XML,sh}
-\lstset{flexiblecolumns=true,basicstyle=\small,tagstyle=\ttfamily}
+\lstloadlanguages{XML,SQL}
+\lstset{flexiblecolumns=true,basicstyle=\ttfamily}
 \usepackage[utf8]{inputenc}
 \usepackage{todonotes}
 \usepackage{textcomp}
@@ -13,6 +13,8 @@
 \usepackage{lscape}
 \usepackage{longtable}
 \hyphenation{image/mosaic}
+
+\marginparwidth=4.5cm
 
 \title{IVOA Obscore Extension for Radio data}
 
@@ -396,17 +398,43 @@ Auxiliary datasets such as  uv distribution map, dirty beam maps, frequency/ampl
 In that case DataLink \citep{2015ivoa.spec.0617D} may provide a solution to attach these auxliary data to ObsCore records. The semantics FIELD in the \{link\} response  will contain \#auxiliary  for links to these maps or plots while  the content\_qualifier FIELD introduced from 1.1  could contain a vocabulary as defined in this ObsCore extension in table \ref{tab:ExtensionAtt}.
 
 
-\section{How to implement the extension in a TAP service}i
+\section{The ivoa.obs\_radio table}
 \label{sec:implementation}
 
-The ObsCore extension for radio (including or not visibility data) described above SHOULD  be added to the main ObsCore table. The standardID for this extented table will be ivo://ivoa.net/std/ObsCore\#radioExt-1.0". This implies that the the core ObsCore attributes follow version 1.1 of the Obscore standard.
-\textit{ In practice a  table containing only the extension attributes  MAY be added to the same schema. The full extension table will then be a view joining the core table and the  table with extension attribue only via an extended ObsTAP ADQL query. A single dataset in each observation will be associated to a single row in ObsCore. It will be identified by a unique obs\_publisher\_did. This obs\_publisher\_did can be used as a foreign key to join the main table and the extension table.}
+The ObsCore Extension for Radio is accessed as a table within a TAP
+\citep{2019ivoa.spec.0927D} service.\todo{I think we should require a
+few UDFs on that: ivo\_interval\_overlaps, ivo\_specconv}  At this
+point, the name of this table is fixed to \verb|ivoa.obs_radio|.
+However, in order to allow for later evolution -- that may allow
+multiple compliant tables per service --, this name should not be used
+for discovery (see sect.~\ref{sec:registry}).
 
-In the registry, the Obscore table and the Extended table MUST be described in the tableset of the service. They will show respectively the ObsCore Model utype "ivo://ivoa.net/std/ObsCore\#core-1.0" an the extended Obscore Model utype "ivo://ivoa.net/std/ObsCore\#radioExt-1.0" .
+A TAP service that has \verb|ivoa.obs_radio| must also have a table
+compliant to any version 1 of ObsCore, i.e., a table
+\verb|ivoa.obscore|; the two tables must share exactly the columns such
+that a \verb|NATURAL JOIN| will yield per-dataset rows of obscore and
+radio extension metadata.
 
+To ensure that all compliant services can execute the same queries,
+all columns in table~\ref{tab:ExtensionAtt} must be present in such a
+table, although any may be NULL.  Additional columns may be present, and
+at least a foreign key into \verb|ivoa.obscore| will typcially
+user-visible\todo{can we make rules such that such additional columns
+will not interfere with later extensions?}.
 
-
-
+The intention is that clients will write queries like
+\begin{lstlisting}
+SELECT [any obscore and obs_radio columns or expressions]
+FROM
+  ivoa.obscore
+  NATURAL JOIN ivoa.obs_radio
+WHERE
+  [constraints]
+\end{lstlisting}
+without having to know the exact foreign key(s) in use on any given
+service.  This means that while one service can opt to join on
+\verb|obs_publisher_did| (we expect this to be a very common choice),
+other services may choose to join on, say, artificial keys.
 
 \begin{landscape}
 \begin{longtable}{l  p{4cm} p{4cm} p{4.5cm} l l l}
@@ -428,7 +456,7 @@ In the registry, the Obscore table and the Extended table MUST be described in t
 \sptablerule
 \texttt{f\_max}&\texttt{spectral coverage max in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Mhz&radio\cr
 \sptablerule
-\texttt{f\_rsolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Khz&radio\cr
+\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Khz&radio\cr
 \sptablerule
 \texttt{t\_exp\_min}&\texttt{minimum integration time per sample}&\texttt{Char.TimeAxis.\newline Sampling.Extent\newline LoLim}&{time.duration;obs.exposure;\newline stat.min}&s&radio\cr
 \sptablerule
@@ -475,6 +503,43 @@ In the registry, the Obscore table and the Extended table MUST be described in t
 \label{tab:ExtensionAtt}
 \end{longtable}
 \end{landscape}
+
+\section{Registry Aspects}
+\label{sec:registry}
+
+Services compliant with this specification are registered using
+VODataService \citep{2021ivoa.spec.1102D} tablesets.  Compliant tables
+use the utype
+$$
+\hbox{\nolinkurl{ivo://ivoa.net/std/ObsRadio#table-1.0}.}
+$$
+
+While it is admitted that the table only sits in the tableset of the
+embedding TAP service, implementors are urged to use a seperate registry
+record with the main TAP service as an auxiliary capability
+\citep{2019ivoa.spec.0520D}.  In this way, meaningful information
+on coverage in space, time, and spectraum as per VODataService 1.2 can
+be communicated to the Registry, which, again, data providers are urged
+to do.  There is no expectation that the coverage information only
+pertains to data with entries in \verb|ivoa.obs_radio|, i.e., it may be
+a copy of the coverage of the full Obscore table.\todo{Is that
+acceptable?  Or should we require pure radio coverage?}
+
+To obtain access URLs of all TAP services that have compliant tables
+together with their table names (which in this major version are fixed
+to \verb|ivoa.obs_radio|), use a RegTAP \citep{2019ivoa.spec.1011D}
+query like:
+
+\begin{lstlisting}
+SELECT DISTINCT(access_url), table_name,
+FROM rr.res_table
+  NATURAL JOIN rr.capability
+  NATURAL JOIN rr.interface
+WHERE
+  standard_id LIKE 'ivo://ivoa.net/std/tap%'
+  AND intf_role='std'
+  AND table_utype LIKE 'ivo://ivoa.net/std/ObsRadio#table-1.%'
+\end{lstlisting}
 
 \appendix
 
