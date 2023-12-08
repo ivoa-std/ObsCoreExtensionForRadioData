@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href='/static/xsl/oai.xsl' type='text/xsl'?>
+<ri:Resource xmlns:g-colstat="http://dc.g-vo.org/ColStats-1" xmlns:ri="http://www.ivoa.net/xml/RegistryInterface/v1.0" xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0" xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" created="2021-11-11T13:00:00Z" status="active" updated="2023-12-08T17:26:41Z" xsi:schemaLocation="http://dc.g-vo.org/ColStats-1 http://vo.ari.uni-heidelberg.de/docs/schemata/Colstats.xsd http://www.ivoa.net/xml/RegistryInterface/v1.0 http://vo.ari.uni-heidelberg.de/docs/schemata/RegistryInterface.xsd http://www.ivoa.net/xml/VOResource/v1.0 http://vo.ari.uni-heidelberg.de/docs/schemata/VOResource.xsd http://www.ivoa.net/xml/VODataService/v1.1 http://vo.ari.uni-heidelberg.de/docs/schemata/VODataService.xsd" xsi:type="vs:CatalogResource">
+  <title>DaCHS &#x2620; Development Site obs_radio Table</title>
+  <shortName>ivoa.obs_radio</shortName>
+  <identifier>ivo://org.gavo.dc/__system__/obs-radio/obs_radio</identifier>
+  <curation>
+    <publisher>The GAVO DC team</publisher>
+    <creator>
+      <name>GAVO Data Center</name>
+      <logo>http://victor:8080/favicon.png</logo>
+    </creator>
+    <date role="updated">2023-12-08T17:26:41Z</date>
+    <contact>
+      <name>Markus Demleitner</name>
+      <address>M&#xF6;nchhofstrasse 12-14, D-69120 Heidelberg</address>
+      <email>msdemlei@ari.uni-heidelberg.de</email>
+      <telephone>++49 6221 54 1837</telephone>
+    </contact>
+  </curation>
+  <content>
+    <subject>observational-astronomy</subject>
+    <subject>interferometry</subject>
+    <description>An IVOA-defined metadata table for radio measurements, with extra
+metadata for interferometric measurements ("visibilities") as well as
+single-dish observations. You will almost always want to join this
+table to ivoa.obscore (do a natural join).</description>
+    <referenceURL>http://victor:8080/tableinfo/ivoa.obs_radio</referenceURL>
+    <relationship>
+      <relationshipType>IsServedBy</relationshipType>
+      <relatedResource ivo-id="ivo://org.gavo.dc/tap">DaCHS &#x2620; Development Site TAP service</relatedResource>
+    </relationship>
+  </content>
+  <capability standardID="ivo://ivoa.net/std/TAP#aux">
+    <interface role="std" version="1.1" xsi:type="vs:ParamHTTP">
+      <accessURL use="full">http://victor:8080/tap</accessURL>
+    </interface>
+  </capability>
+  <coverage>
+    <spatial>2/81 89 3/321 330-332 334-336 352-353 355 619 622-623 641 644 646-647
+4/1283 1289 1292-1293 1295 1315 1317-1319 1332 1334 1352 1354 1417</spatial>
+    <temporal>16918.5 63023.51852</temporal>
+    <spectral>9.512034223e-33 1.603508989e-08</spectral>
+  </coverage>
+  <tableset>
+    <schema>
+      <name>ivoa</name>
+      <title>DaCHS &#x2620; Development Site obs_radio Table</title>
+      <description>Radio-specific metadata for suitable data products from
+DaCHS &#x2620; Development Site's obscore table.</description>
+      <table>
+        <name>ivoa.obs_radio</name>
+        <description>An IVOA-defined metadata table for radio measurements, with extra
+metadata for interferometric measurements ("visibilities") as well as
+single-dish observations. You will almost always want to join this
+table to ivoa.obscore (do a natural join).</description>
+        <utype>ivo://ivoa.net/std/ObsRadio#table-1.0</utype>
+        <column>
+          <name>obs_publisher_did</name>
+          <description>Dataset identifier assigned by the publisher.</description>
+          <ucd>meta.ref.ivoid</ucd>
+          <utype>obscore:curation.publisherdid</utype>
+          <dataType arraysize="*" xsi:type="vs:VOTableType">char</dataType>
+          <flag>indexed</flag>
+          <flag>primary</flag>
+        </column>
+        <column>
+          <name>s_resolution_min</name>
+          <description>Angular resolution, longest baseline and max frequency dependant</description>
+          <unit>arcsec</unit>
+          <ucd>pos.angResolution;stat.min</ucd>
+          <utype>Char.SpatialAxis.Resolution.Bounds.Limits.LoLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>s_resolution_max</name>
+          <description>Angular resolution, longest baseline and min frequency dependant</description>
+          <unit>arcsec</unit>
+          <ucd>pos.angResolution;stat.max</ucd>
+          <utype>Char.SpatialAxis.Resolution.Bounds.Limits.HiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>s_fov_min</name>
+          <description>Field of view diameter, min value, max frequency dependant</description>
+          <unit>deg</unit>
+          <ucd>phys.angSize;instr.fov; stat.min</ucd>
+          <utype>Char.SpatialAxis.Coverage.Bounds.Extent.LowLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>s_fov_max</name>
+          <description>Field of view diameter, max value, min frequency dependant</description>
+          <unit>deg</unit>
+          <ucd>phys.angSize;instr.fov; stat.max</ucd>
+          <utype>Char.SpatialAxis.Coverage.Bounds.Extent.HiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>s_maximum_angular_scale</name>
+          <description>Maximum scale in dataset, shortest baseline and frequency dependant</description>
+          <unit>arcsec</unit>
+          <ucd>phys.angSize;stat.max</ucd>
+          <utype>Char.SpatialAxis.Resolution.Scale.Limits.HiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>f_resolution</name>
+          <description>Absolute spectral resolution in frequency</description>
+          <unit>Khz</unit>
+          <ucd>em.freq;stat.max</ucd>
+          <utype>Char.SpectralAxis.Coverage.BoundsLimits.HiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>t_exp_min</name>
+          <description>Minimum integration time per sample</description>
+          <unit>s</unit>
+          <ucd>time.duration;obs.exposure; stat.min</ucd>
+          <utype>Char.TimeAxis.Sampling.ExtentLoLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>t_exp_max</name>
+          <description>Maximum integration time per sample</description>
+          <unit>s</unit>
+          <ucd>time.duration;obs.exposure; stat.max</ucd>
+          <utype>Char.TimeAxis.Sampling.ExtentHiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>t_exp_mean</name>
+          <description>Average integration time per sample</description>
+          <unit>s</unit>
+          <ucd>time.duration;obs.exposure stat.mean</ucd>
+          <utype>Char.TimeAxis.Sampling.ExtentHiLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>uv_distance_min</name>
+          <description>Minimal distance in uv plane</description>
+          <unit>m</unit>
+          <ucd>stat.fourier;pos;stat.min</ucd>
+          <utype>Char.UVAxis.Coverage.Bounds.Limits.LoLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>uv_distance_max</name>
+          <description>Maximal distance in uv plane</description>
+          <unit>m</unit>
+          <ucd>stat.fourier;pos;stat.max</ucd>
+          <utype>Char.UVAxis.Coverage.Bounds.Limits.LoLim</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>uv_distribution_ecc</name>
+          <description>Eccentricity of uv distribution</description>
+          <ucd>stat.fourier;pos</ucd>
+          <utype>Char.UVAxis.Coverage.Bounds.Eccentricity</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>uv_distribution_fill</name>
+          <description>Filling factor of uv distribution</description>
+          <ucd>stat.fourier;pos;arith.ratio</ucd>
+          <utype>Char.UVAxis.Coverage.Bounds.FillingFactor</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>instrument_ant_number</name>
+          <description>Number of antennas in array</description>
+          <ucd>meta.number;instr.param</ucd>
+          <utype>Provenance.ObsConfig.Instrument.Array.AntNumber</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>instrument_ant_min_dist</name>
+          <description>Minimum distance between antennas in array</description>
+          <unit>m</unit>
+          <ucd>instr.baseline;stat.min</ucd>
+          <utype>Provenance.ObsConfig.Instrument.Array.MinDist</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>instrument_ant_max_dist</name>
+          <description>Maximum distance between antennas in array</description>
+          <unit>m</unit>
+          <ucd>instr.baseline;stat.max</ucd>
+          <utype>Provenance.ObsConfig.Instrument.Array.MaxDist</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>instrument_ant_diameter</name>
+          <description>Diameter of telecope or antennas in array</description>
+          <unit>m</unit>
+          <ucd>instr.param</ucd>
+          <utype>Provenance.ObsConfig.Instrument.Array.Diameter</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>instrument_feed</name>
+          <description>Number of feeds</description>
+          <ucd>instr.param</ucd>
+          <utype>Provenance.ObsConfig.Instrument.Feed</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>scan_mode</name>
+          <description>Scan mode (on-off, raster map, on-the-fly map,...)</description>
+          <ucd>instr.param</ucd>
+          <utype>Provenance.Observation.sky_scan_mode</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>tracking_mode</name>
+          <description>Targeted, alt-azimuth, wobble, ...)</description>
+          <ucd>instr.param</ucd>
+          <utype>Provenance.Observation.tracking_mode</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+        <column>
+          <name>uv_distribution_map</name>
+          <description>Uv distribution map</description>
+          <ucd>stat.fourier;pos;meta.ref.url</ucd>
+          <utype>Char.UVAxis.Sampling.Sensitivity.Map</utype>
+          <dataType xsi:type="vs:VOTableType">float</dataType>
+          <flag>nullable</flag>
+        </column>
+      </table>
+    </schema>
+  </tableset>
+</ri:Resource>

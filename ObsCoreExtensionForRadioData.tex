@@ -14,7 +14,7 @@
 \usepackage{longtable}
 \hyphenation{image/mosaic}
 
-\marginparwidth=4.5cm
+\marginparwidth=4cm
 
 \title{IVOA Obscore Extension for Radio data}
 
@@ -403,9 +403,9 @@ In that case DataLink \citep{2015ivoa.spec.0617D} may provide a solution to atta
 
 The ObsCore Extension for Radio is accessed as a table within a TAP
 \citep{2019ivoa.spec.0927D} service.\todo{I think we should require a
-few UDFs on that: ivo\_interval\_overlaps, ivo\_specconv}  At this
+few UDFs on TAP services: ivo\_interval\_overlaps, ivo\_specconv}  At this
 point, the name of this table is fixed to \verb|ivoa.obs_radio|.
-However, in order to allow for later evolution -- that may allow
+However, in order to allow for later evolution -- which may allow
 multiple compliant tables per service --, this name should not be used
 for discovery (see sect.~\ref{sec:registry}).
 
@@ -413,7 +413,7 @@ A TAP service that has \verb|ivoa.obs_radio| must also have a table
 compliant to any version 1 of ObsCore, i.e., a table
 \verb|ivoa.obscore|; the two tables must share exactly the columns such
 that a \verb|NATURAL JOIN| will yield per-dataset rows of obscore and
-radio extension metadata.
+radio extension metadata.  Which columns these are is site-specific.
 
 To ensure that all compliant services can execute the same queries,
 all columns in table~\ref{tab:ExtensionAtt} must be present in such a
@@ -511,7 +511,7 @@ Services compliant with this specification are registered using
 VODataService \citep{2021ivoa.spec.1102D} tablesets.  Compliant tables
 use the utype
 $$
-\hbox{\nolinkurl{ivo://ivoa.net/std/ObsRadio#table-1.0}.}
+\hbox{\nolinkurl{ivo://ivoa.net/std/obsradio#table-1.0}.}
 $$
 
 While it is admitted that the table only sits in the tableset of the
@@ -525,20 +525,23 @@ pertains to data with entries in \verb|ivoa.obs_radio|, i.e., it may be
 a copy of the coverage of the full Obscore table.\todo{Is that
 acceptable?  Or should we require pure radio coverage?}
 
+A sample registry record for an obs\_radio table comes with this
+specification\footnote{\auxiliaryurl{sample-record.xml}}.
+
 To obtain access URLs of all TAP services that have compliant tables
 together with their table names (which in this major version are fixed
 to \verb|ivoa.obs_radio|), use a RegTAP \citep{2019ivoa.spec.1011D}
 query like:
 
 \begin{lstlisting}
-SELECT DISTINCT(access_url), table_name,
+SELECT DISTINCT(access_url), table_name
 FROM rr.res_table
   NATURAL JOIN rr.capability
   NATURAL JOIN rr.interface
 WHERE
   standard_id LIKE 'ivo://ivoa.net/std/tap%'
   AND intf_role='std'
-  AND table_utype LIKE 'ivo://ivoa.net/std/ObsRadio#table-1.%'
+  AND table_utype LIKE 'ivo://ivoa.net/std/obsradio#table-1.%'
 \end{lstlisting}
 
 \appendix

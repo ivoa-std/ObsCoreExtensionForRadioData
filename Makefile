@@ -36,5 +36,11 @@ ivoatex/Makefile:
 	@echo
 	git submodule update --init
 
+# update the registry record example from a locally running DaCHS
+sample-record.xml:
+	curl -s http://localhost:8080/getRR/__system__/obs-radio/obs_radio | xmlstarlet fo > $@
+
+STILTS ?= stilts
+
 test:
-	@echo No tests defined yet
+	@$(STILTS) xsdvalidate sample-record.xml
