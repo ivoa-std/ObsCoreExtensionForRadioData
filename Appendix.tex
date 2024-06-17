@@ -113,7 +113,7 @@ II. higher spectral limit < 1Ghz
       SELECT * FROM ivoa.ObscoreRadioExtended
       WHERE (dataproduct_type = 'image' OR
       dataproduct_type = 'cube') AND
-      f_max  < 1e9
+      299792458 / em_min  < 1e9
 \end{verbatim}
 % Mireille Louys: shall we also look for spectra with these frequency constrains ? 
 
@@ -125,9 +125,9 @@ II. higher spectral limit < 1Ghz
 
 % These use NATURAL JOIN
 % Should these restrict the dataproduct_type?
+\subsection{Use case - high resolution data around FRB targets }
 
-Give me high-resolution data on possible persistent radio sources with
-an arc second of FRB 121102:
+\textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102:}
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obs_radio
@@ -135,8 +135,10 @@ WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458,33.14794,0.0003)) = 1 AND
 s_resolution_max < 0.001
 \end{verbatim}
 
-Give me data on extended HI emission around the source 3C84 that can
-be imaged with reasonable fidelity:
+\subsection{Use case - reasonable fidelity}
+
+\textit{Give me data on extended HI emission around the source 3C84 that can
+be imaged with reasonable fidelity:}
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obs_radio
@@ -150,7 +152,7 @@ em_max > 0.21
 
 % end of Mark's (VLBI) science cases
 
-\subsection{ use case - visibility data product and targer object selection }
+\subsection{ use case - visibility data product and target object selection }
 \textit{Any raw interferometry observation containing target Fornax cluster.}\\
 \\
 Show me all  observation identifiers satisfying:\\
