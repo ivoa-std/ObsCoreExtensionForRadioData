@@ -178,7 +178,6 @@ III. Position within 1 arcsec of 82.99458 + 33.14794
       SELECT * FROM ivoa.ObscoreRadioExtended
       WHERE dataproduct_type = 'visibility' AND
       max_angular_scale > 0.018 AND
-      max_angular_scale > 0.018 AND
       CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458, 33.14794,0.0003)) = 1))
 \end{verbatim}
 
@@ -193,7 +192,7 @@ IV. uv distribtion factor eccentricity  < 0.1 \\
 V. Position within 1 arcsec of 82.99458 + 33.14794
 \begin{verbatim}
       SELECT * FROM ivoa.ObscoreRadioExtended
-      WHERE dataproduct_type = 'visibilty' AND
+      WHERE dataproduct_type = 'visibility' AND
       max_angular_scale > 0.018 AND
       uv_distribution_fill > 0.7 AND
       uv_distribution_ecc < 0.1 AND 
