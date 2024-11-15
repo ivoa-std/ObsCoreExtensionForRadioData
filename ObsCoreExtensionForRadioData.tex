@@ -268,16 +268,18 @@ A typical value for  the size of the field of view is to be computed on the obse
 %mid value of the spectral range
 receiver nominal wavelength and D coincides with the telescope diameter (SD case) or the largest diameter of the array antennae or telescopes (interferometric case).
 In interferometry, the correlator can also restrict the fov depending on the trade-off set to build the signal. 
-
+Nominal wavelength SHOULD be taken as the mid value of the spectral range except if data providers have good reasons to propose another value which should be documented in the FIELD DESCRIPTION tag in that case. 
 \subsection{s\_resolution}
 \label{sec:res}
 In the case of SD using mono- or multi-feed/PAF receivers this is the beam size inferred from the wavelength and telescope diameter.
 In the case of interferometry, a typical value for the spatial resolution will be given by $\lambda / L$ where $\lambda$
 is the %mid value of the spectral range
 receiver nominal wavelength and L is the longest distance in the \emph{uv} plane.
-
-For beamforming applied to SD \emph{s\_resolution} is set by the size of one individual electronically-formed beam, while in the interferometric
-case it is ruled by the maximum distance among the radio stations.
+As above nominal wavelength SHOULD be taken as the mid value of the spectral range except if data providers want  
+for secific reasons. 
+For beamforming applied to SD \emph{s\_resolution} is set by the size of one individual electronically-formed beam.
+%while in the interferometric case it is ruled by the maximum distance among the radio stations.
+% redondant statement above ?
  
 \subsection{s\_region}
 The shape of the covered region. 
@@ -323,16 +325,20 @@ querying parameters we propose to add to ObsCore in order to better describe rad
 The last column indicates if the attribute is useful for all radio datasets or only for visibilities, beam forming, or single dish data.
 
 \subsection{spatial parameters}
-\emph{s\_fov\_min, s\_fov\_max} are estimated like the typical value (see subsection \ref{sec:fov}). 
+
+For extended spectral range datasets \emph{s\_fov\_min, s\_fov\_max} are estimated like in the typical value case (see subsection \ref{sec:fov}).  
 In the case of SD pointed observations with mono-feed receivers and the majority of interferometric observations the minimum and maximum
-$\lambda$ values in the spectral range(s) will be used in the formula. In the case of mapping scans or multi-feed/PAF receivers
-\emph{ s\_fov\_min} and \emph{s\_fov\_max} are derived as the minimum and maximum sizes of the circular region encompassing the covered area.
+$\lambda$ values in the spectral range(s) will be used in the formula to estimate respectively \emph{s\_fov\_min} and  \emph{s\_fov\_max}. \\
+In the case of mapping scans or multi-feed/PAF receivers \emph{ s\_fov\_min} and \emph{s\_fov\_max} are derived as the minimum and maximum sizes of the 
+circular region encompassing the covered area.
 
 
-\emph{s\_resolution\_min, s\_resolution\_max} are estimated like the typical value (see subsection \ref{sec:res}) where $\lambda$ is replaced by the minimum and maximum wavelength of the spectral range(s). The size D is the telescope diameter for SD observations and the largest distance in the \emph{uv} plane. Beam forming may represent an exception to this rule, see \ref{sec:res}.
+\emph{s\_resolution\_best, s\_resolution\_worse} are estimated like the typical value (see subsection \ref{sec:res}) where $\lambda$ is replaced respectively by the minimum and maximum wavelength of the spectral range(s). The size D is the telescope diameter for SD observations and the largest distance in the \emph{uv} plane for interferometry. Beam forming may represent an exception to this rule, see \ref{sec:res}.
 
-In the case of interferometry, the \emph{s\_maximum\_angular\_scale} is estimated as $\lambda/l$ where $\lambda$ is the typical
-wavelength and l is the typical smallest distance in the \emph{uv} plane.
+In the case of interferometry, we introduce the new \emph{s\_maximum\_angular\_scale} which is estimated as $\lambda/l$ where $\lambda$ is the typical
+wavelength (and again typical value SHOULD be estimated as the mid value of the spectral range apart from documented exceptions) and l is the typical smallest distance in the \emph{uv} plane. This parameter is not relevant for other observation modes.
+The maximum angular scale is also variable along the spectral range. That's why we bound it with \emph{s\_maximum\_angular\_scale\_min} and \emph{s\_maximum\_angular\_scale\_max} estimated as  respectively $\lambda\_min/l$ and  $\lambda\_max/l$
+
 
 
 \subsection{frequency characterization}
@@ -433,7 +439,7 @@ response  will contain \#auxiliary  for links to these maps or plots while  the 
 \section{The ivoa.obscore\_radio table}
 \label{sec:implementation}
 The ObsCore Extension for Radio is accessed as a table within a TAP
-\citep{2019ivoa.spec.0927D} service.\todo{I think we should require a
+\citep{2019ivoa.spec.0927D} service.\footnote{I think we should require a
 few UDFs on TAP services: ivo\_interval\_overlaps, ivo\_specconv}  At this
 point, the name of this table is fixed to \verb|ivoa.obscore_radio|.
 However, in order to allow for later evolution -- which may allow
@@ -453,7 +459,7 @@ To ensure that all compliant services can execute the same queries,
 all columns in table~\ref{tab:ExtensionAtt} must be present in such a
 table, although any may be NULL. At least a foreign key into \verb|ivoa.obscore| will typically
 make the extension table user-visible. Additional free columns (such as f\_min, f\_max) may also
-be added.\todo{can we make rules such that such additional columns
+be added.\footnote{can we make rules such that such additional columns
 will not interfere with later extensions?}.
 
 The intention is that clients will write queries like
@@ -466,8 +472,8 @@ WHERE
   [constraints]
 \end{lstlisting}
 
-It is also possible to include a view performing this JOIN in the ivoa schema in
-order to make it directly available for service users. 
+In addition a view performing this JOIN is included in the ivoa schema in
+order to make it directly available for service users . 
 
 % commented below: FB version
 %The ObsCore Extension for Radio data is accessed in a table containing also ObsCore fields within a TAP
@@ -525,15 +531,19 @@ order to make it directly available for service users.
 \textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}&\textbf{validity}\cr
 \sptablerule
 \sptablerule
-\texttt{ s\_resolution\_min}&\texttt{ Angular resolution, longest baseline and  max frequency dependant}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.angResolution;stat.min}&{arcsec}&radio\cr
+\texttt{ s\_resolution\_best}&\texttt{ Angular resolution, longest baseline and  max frequency dependant}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.angResolution;stat.min}&{arcsec}&radio\cr
 \sptablerule
-\texttt{s\_resolution\_max}&\texttt{Angular resolution, longest baseline and min frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.angResolution;stat.max}&arcsec&radio\cr
+\texttt{s\_resolution\_worse}&\texttt{Angular resolution, longest baseline and min frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.angResolution;stat.max}&arcsec&radio\cr
 \sptablerule
 \texttt{s\_fov\_min}&\texttt{field of view diameter,  min value, max frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.LowLim}&{phys.angSize;instr.fov;\newline stat.min}&deg&radio\cr
 \sptablerule
 \texttt{s\_fov\_max}&\texttt{field of view diameter,  max value, min frequency dependant}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg&radio\cr
 \sptablerule
-\texttt{s\_maximum\_angular\_scale}&\texttt{maximum scale in dataset, shortest baseline and  frequency dependant}& &{phys.angSize;stat.max}&arcsec&interferometry\cr
+\texttt{s\_maximum\_angular\_scale}&\texttt{maximum scale in dataset, shortest baseline and  for typical frequency}&\texttt{Char.SpatialAxis.\newline Resolution.Scale.\newline Limits.HiLim}&{phys.angSize;stat.max}&arcsec&interferometry\cr
+\sptablerule
+\texttt{s\_maximum\_angular\_scale\_min}&\texttt{smallest maximum scale in dataset, shortest baseline and for highest frequency}&\texttt{Char.SpatialAxis.\newline Resolution.Scale.\newline Limits.HiLim.Low}&{phys.angSize;stat.max}&arcsec&interferometry\cr
+\sptablerule
+\texttt{s\_maximum\_angular\_scale\_max}&\texttt{largest maximum scale in dataset, shortest baseline and  for lowest frequency}&\texttt{Char.SpatialAxis.\newline Resolution.Scale.\newline Limits.HiLim.Hi}&{phys.angSize;stat.max}&arcsec&interferometry\cr
 \sptablerule
 %\texttt{f\_min}&\texttt{spectral coverage min in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.LoLim}&{em.freq;stat.min}&Mhz&radio\cr
 %\sptablerule
@@ -555,8 +565,6 @@ order to make it directly available for service users.
 \sptablerule
 \texttt{uv\_distribution\_fill}&\texttt{filling factor of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline FillingFactor}&stat.fourier;pos;\newline arith.ratio&&interferometry \cr
 \sptablerule
-\texttt{uv\_distribution\_map}&\texttt{access to map}&\texttt{Char.UVAxis.\newline  Sampling.\newline Sensitivity.Map}&stat.fourier;pos;\newline meta.ref.url&&interferometry \cr
-\sptablerule
 %\texttt{s\_beam\_dirty}&\texttt{dirty beam}&\texttt{- (via DataLink}&{via DataLink}&&interferometry\cr
 %\sptablerule
 %\texttt{phase\_amplitude}&\texttt{phase amplitude plot}&\texttt{via DataLink}&{via DataLink}&&interferometry\cr
@@ -566,10 +574,10 @@ order to make it directly available for service users.
 \caption{ObsCore extension proposal for radio data}
 \label{tab:ExtensionAtt}
 \end{longtable}
-\end{landscape}
+%\end{landscape}
 
 %second table
-\begin{landscape}
+%\begin{landscape}
 \begin{longtable}{l  p{4cm} p{4cm} p{4.5cm} l l l}
 \sptablerule
 \textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}&\textbf{validity}\cr
@@ -641,11 +649,18 @@ order to make it directly available for service users.
 \label{sec:registry}
 
 Services compliant with this specification are registered using
-VODataService \citep{2021ivoa.spec.1102D} tablesets. Compliant tables
+VODataService \citep{2021ivoa.spec.1102D} tablesets. The view table providing the
+join between the basic ObsCore table  and the obscore\_radio table
 use the utype
 $$
 \hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore#radioExt-1.0}.}
 $$
+and this is a signature of the compliance of the service with the current specification.
+
+Discovering the obscore\_radio table alone would be  irrelevant  because querying this
+extension table per se doesn't make sense.
+However, being sure our ivoa schema  contains both the ObsCore table and the obscore\_radio table,
+the user is able  to  build any natural JOIN query between these two tables. 
 
 While it is admitted that the table only sits in the tableset of the
 embedding TAP service, implementors are urged to use a seperate registry
@@ -655,15 +670,15 @@ on coverage in space, time, and spectrum as per VODataService 1.2 can
 be communicated to the Registry, which, again, data providers are urged
 to do. There is no expectation that the coverage information only
 pertains to data with entries in \verb|ivoa.obscore_radio|, i.e., it may be
-a copy of the coverage of the basic ObsCore table.\todo{Is that
+a copy of the coverage of the basic ObsCore table.\footnote{Is that
 acceptable? Or should we require pure radio coverage?}
 
-A sample registry record for an obscore\_radio table comes with this
-specification\footnote{\auxiliaryurl{sample-record.xml}}.
+%A sample registry record for an obscore\_radio table comes with this
+%specification\footnote{\auxiliaryurl{sample-record.xml}}.
 
-In order to find out directly if the ivoa schema contains the radio extension
-the schema MUST be defined in the registry with the utype
-\hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore#obscore-radioExt-1.0}}
+%In order to find out directly if the ivoa schema contains the radio extension
+%the schema MUST be defined in the registry with the utype
+%\hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore#obscore-radioExt-1.0}}
 
 To obtain access URLs of all TAP services that have compliant tables
 together with their table names (which in this major version are fixed
@@ -681,19 +696,19 @@ AND intf_role='std'
 AND table_utype LIKE 'ivo://ivoa.net/std/ObsCore#radioExt-%'
 \end{lstlisting}
 
-Alternatively the schema and tables can be discovered this way
+%Alternatively the schema and tables can be discovered this way
 
-\begin{lstlisting}
-SELECT DISTINCT(access_url), table_name, schema_name
-FROM rr.res_table
-NATURAL JOIN rr.capability
-NATURAL JOIN rr.interface
-NATURAL JOIN rr.res_schema
-WHERE 
-standard_id LIKE 'ivo://ivoa.net/std/tap%'
-AND intf_role='std'
-AND schema_utype LIKE 'ivo://ivoa.net/std/ObsCore#obscore-radioExt-%'
-\end{lstlisting}
+%\begin{lstlisting}
+%SELECT DISTINCT(access_url), table_name, schema_name
+%FROM rr.res_table
+%NATURAL JOIN rr.capability
+%NATURAL JOIN rr.interface
+%NATURAL JOIN rr.res_schema
+%WHERE 
+%standard_id LIKE 'ivo://ivoa.net/std/tap%'
+%AND intf_role='std'
+%AND schema_utype LIKE 'ivo://ivoa.net/std/ObsCore#obscore-radioExt-%'
+%\end{lstlisting}
 
 \appendix
 
