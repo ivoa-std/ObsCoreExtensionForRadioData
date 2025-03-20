@@ -20,10 +20,10 @@ IVOA_GROUP = Data Model
 SOURCES = $(DOCNAME).tex role_diagram.pdf Appendix.tex
 
 # List of pixel image files to be included in submitted package
-FIGURES = role_diagram.svg
+FIGURES = role_diagram.pdf
 
 # List of PDF figures (for vector graphics)
-VECTORFIGURES = role_diagram.pdf
+VECTORFIGURES = role_diagram.svg
 
 # Additional files to distribute (e.g., CSS, schema files, examples...)
 AUX_FILES =
