@@ -89,6 +89,7 @@ III. Observed frequency in the range 20-21 GHz \\
 IV. dataproduct\_type = spatial\_profile or scan\_mode contains map\\
 V. 51544 < observation time (MJD) < 60309 \\
 
+
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore-radio
@@ -180,6 +181,7 @@ II. Target Name = Fornax Cluster \\
 \end{verbatim}
 
 
+
 \subsection{Use case - maximum angular scale selection}
 \textit{Any visibility dataset Within an arcec around FRB 121102  where  maximum angular scale is larger than 1 minute .}\\ \\
 Show me all datasets satisfying:\\
@@ -247,7 +249,8 @@ IV. position inside 3 arcmin around  	187.2779159404900 +02.0523882305500
        CONTAINS(POINT(s_ra,s_dec), CIRCLE(187.2779159404900, +02.0523882305500,0.05)) = 1)     
 \end{verbatim}
 
-% use case FB 
+
+
 \subsection{Use case - instrument type and frequency selection }
 \textit{Any single dish or beam forming dataset  with spectral range inside the 500 Mhz - 1Ghz band and in the Coma Cluster.}\\ \\
 Show me all datasets satisfying:\\
@@ -261,10 +264,11 @@ IV. position inside 18 arcmin around 194.93502 +27.91246
       NATURAL JOIN  ivoa.obscore-radio
       WHERE (instr_type = 'SD' OR
       instr_type = 'beamForming') 
-      AND f_min > 500 
-      AND f_max < 1000 
+      AND 299792458 / em_max > 500 
+      AND 299792458 / em_min < 1000 
       AND CONTAINS(POINT(s_ra,s_dec),CIRCLE(194.93502, +27.91246, 0.3) = 1     
 \end{verbatim}
+
 
 
 \subsection{Use case - instrument parameters selection }

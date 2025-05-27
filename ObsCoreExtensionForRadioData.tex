@@ -41,12 +41,13 @@
 
 
 
+
 %definition of table names 
 %\def\radioexttable {ivoa.obscore-radio-ext} % explicit 
 \def\radioexttable {ivoa.obsradio} % not explicitely related to Obscore 
 \def\radioexttable {ivoa.obscore-radio} 
 %definition of standard id for  utypes content 
-%\def\obsradioSTDID {ivo://ivoa.net/std/obscore-radio-ext#table-1.0} 
+%\def\obsradioSTDID {ivo://ivoa.net/std/obscore-radio-ext#table-1.0}
 
 \begin{document}
 
@@ -429,17 +430,68 @@ Parameters \emph{instr\_tel\_number, instr\_tel\_min\_dist} and  \emph{instr\_te
 We note that \emph{instr\_feed} could also  account for the number of beams in the case of a beam forming/PAF receiver.
 
 The scanning strategy adopted in an observation is described by the parameter \emph{scan\_mode}. This parameter covers both spatial
-and frequency scanning modes (see Sect.~\ref{subsec:sd} for details).
+and frequency scanning modes (see Sect.~\ref{subsec:sd} for details and table~\ref{tab:scanmode} for possible values).
 It is applicable to  SD as well as  interferometry cases.
 
-Pointing mode distinguishes targeted observations from  fixed alt-azimuth or wobble ones. The ObsLocTAP specification \citep{2021ivoa.spec.0724S} defines the term \emph{tracking\_type} for describing this as well as a  vocabulary for these modes. 
-We include the same term here in the extension.
+
+\begin{longtable}{  p{6cm} p{7cm}  }
+\sptablerule
+	\textbf{value}&\textbf{definition}\cr
+\sptablerule
+\sptablerule
+	\texttt{on}&\texttt{pointed measurement, total power}\cr
+\sptablerule
+	\texttt{on-spectral}&\texttt{pointed spectrum}\cr
+\sptablerule
+	\texttt{on-off}&\texttt{switched measurements between two positions}\cr
+\sptablerule
+	\texttt{on-off-spectral}&\texttt{switched spectral measurements between two positions}\cr
+\sptablerule
+	\texttt{raster}&\texttt{successive measurement spots on a rectangular mesh}\cr
+\sptablerule
+	\texttt{raster-spectral}&\texttt{successively obtained spectra on a rectangular mesh}\cr
+\sptablerule
+	\texttt{on-the-fly-cross-scan}&\texttt{successive continuous measurements along two orthogonal directions}\cr
+\sptablerule
+	\texttt{on-the-fly-cross-scan-spectral}&\texttt{successiveley obtained spectra along two orthogonal directions}\cr
+\sptablerule
+	\texttt{on-the-fly-map-scan}&\texttt{successive continuous measurements along parallel directions}\cr
+\sptablerule
+	\texttt{on-the-fly-map-scan-spectral}&\texttt{successively obtained spectra along two orthogonal directions}\cr
+\sptablerule
+	\texttt{skydip}&\texttt{long strip of measurements}\cr
+\sptablerule
+	\texttt{skydip-spectral}&\texttt{set of spectra obtained along a long strip}\cr
+
+%	\texttt{target}&\texttt{extrasolar target follow up}\cr
+\sptablerule
+\caption{scan-mode attribute values}
+\label{tab:scanmode}
+\end{longtable}
+
+
+Pointing mode distinguishes observations pointed on a fixed target from  
+observations fixed on a given elevation and azimuth. In addition the  
+wobble mode observes both the source and the surrounding background. 
+The ObsLocTAP specification \citep{2021ivoa.spec.0724S} defines the term 
+\emph{tracking\_type} for describing this as well as a  vocabulary for 
+these modes. We include the same term here in the extension. The set of 
+possible values for radio astronomy data is the following:
+\begin{itemize}
+	\item Sidereal : observations pointed on a fixed targeti, as defined in 
+		ObsLocTAP
+	\item Fixed-az-el-transit : observations fixed on a given elevation 
+		and azimuthi, as in ObsLocTAP
+	\item Wobble : observations measuring both the source and the surroundings	
+\end{itemize}
 
 \subsection{Auxiliary datasets useful for data quality estimation}
 
 Auxiliary datasets such as  \emph{uv} distribution map, dirty beam maps, frequency/amplitude plots, phase/amplitude plots are useful for astronomers to check data quality.
+
 In that case DataLink \citep{2023ivoa.spec.1215B} may provide a solution to attach these auxiliary data to ObsCore records. The \texttt{semantics} FIELD in the \{link\}
 response  will contain \#auxiliary  for links to these maps or plots while  the \texttt{content\_qualifier} FIELD introduced from 1.1  could contain a term from a defined vocabulary (to be defined) following the IVOA vocabulary definition  \citep{2021ivoa.spec.0525D}.
+
 
 
 \section{The ivoa.obscore\_radio table}
@@ -606,9 +658,9 @@ WHERE
 \sptablerule
 \texttt{instr\_feed}&\texttt{number of feeds}&\texttt{Provenance.ObsConfig.\newline Instrument.Feed}&instr.param&& radio  \cr
 \sptablerule
-\texttt{scan\_mode}&\texttt{scan mode (on-off, \newline raster map, on-the-fly map,...)\newline }&\texttt{Provenance.\newline Observation.\newline sky\_scan\_mode}&instr.param&& radio \cr
+\texttt{scan\_mode}&\texttt{sky and spectral axis scan mode }&\texttt{Provenance.\newline Observation.\newline sky\_scan\_mode}&instr.param&& radio \cr
 \sptablerule
-\texttt{tracking\_mode}&\texttt{targeted, alt-azimuth, wobble, ...)\newline }&\texttt{Provenance.\newline Observation.\newline tracking\_mode}&instr.param&& radio \cr
+\texttt{tracking\_type}&\texttt{target tracking modes}&\texttt{Provenance.\newline Observation.\newline tracking\_mode}&instr.param&& radio \cr
 \caption{ObsCore extension proposal for instrumental parameters for radio data}
 \label{tab:ExtensionAtt_instrumental}
 \end{longtable}
@@ -659,6 +711,11 @@ WHERE
 
 Services compliant with this specification are registered using
 VODataService \citep{2021ivoa.spec.1102D} tablesets. 
+Compliant tables use the utype
+$$
+\hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore#radioExt-1.0}.}
+$$
+%
 %The view table providing the
 %join between the basic ObsCore table  and the obscore\_radio table
 %use the utype
@@ -666,27 +723,31 @@ VODataService \citep{2021ivoa.spec.1102D} tablesets.
 %\hbox{\nolinkurl{ivo://ivoa.net/std/obscore#radioext-1.0}.}
 %$$
 %and this is a signature of the compliance of the service with the current specification.
-Due to the status of the current specification as an endorsed note, and in prevision of a major 
-upgrade of the ObsCore specification itself which will address the definition of standardID for the 
-different extensions and recommand how to expose them in the compliant services, we don't define
-any standardID for the extension yet. The discovery of the services and schema containing the
-radio extension  table MUST be done using the table\_name only as stated below.
-
-However, discovering the obscore\_radio table alone would be  irrelevant  because querying this
-extension table per se doesn't make sense. The same schema MUST also contain the ObsCore table.   
-Being sure our \textit{ivoa} schema  contains these both tables,
-the user is able  to  build any natural JOIN query between these two tables. 
-
-%While it is admitted that the table only sits in the tableset of the
-%embedding TAP service, implementors are urged to use a seperate registry
-%record with the main TAP service as an auxiliary capability
-%\citep{2019ivoa.spec.0520D}. In this way, meaningful information
-%on coverage in space, time, and spectral axes as per VODataService 1.2 can
-%be communicated to the Registry, which, again, data providers are urged
-%to do. There is no expectation that the coverage information only
+%Due to the status of the current specification as an endorsed note, and in prevision of a major 
+%upgrade of the ObsCore specification itself which will address the definition of standardID for the 
+%different extensions and recommand how to expose them in the compliant services, we don't define
+%any standardID for the extension yet. The discovery of the services and schema containing the
+%radio extension  table MUST be done using the table\_name only as stated below.
+While it is admitted that the table only sits in the tableset of the
+embedding TAP service, implementors are urged to use a seperate registry
+record with the main TAP service as an auxiliary capability
+\citep{2019ivoa.spec.0520D}. In this way, meaningful information
+on coverage in space, time, and spectral axes as per VODataService 1.2 can
+be communicated to the Registry, which, again, data providers are urged
+to do.
+%There is no expectation that the coverage information only
 %pertains to data with entries in \verb|ivoa.obscore_radio|, i.e., it may be
 %a copy of the coverage of the basic ObsCore table.\footnote{Is that
 %acceptable? Or should we require pure radio coverage?}
+
+
+However, discovering the obscore\_radio table alone would be  irrelevant  because querying this
+extension table per se doesn't make sense. The same service delivering the \verb|obscore_radio| table 
+MUST also contain the ObsCore table.   
+Being sure our service  contains these both tables,
+the user is able  to  build any natural JOIN query between these two tables. 
+
+
 
 %A sample registry record for an obscore\_radio table comes with this
 %specification\footnote{\auxiliaryurl{sample-record.xml}}.
@@ -701,7 +762,63 @@ to \verb|ivoa.obscore_radio|), use a RegTAP \citep{2019ivoa.spec.1011D}
 query like:
 
 \begin{lstlisting}
-SELECT DISTINCT(access_url), schema_name, table_name
+SELECT DISTINCT(access_url), table_name
+FROM rr.res_table
+  NATURAL JOIN rr.capability
+  NATURAL JOIN rr.interface
+WHERE
+  standard_id LIKE 'ivo://ivoa.net/std/tap%'
+  AND intf_role='std'
+  AND table_utype LIKE 'ivo://ivoa.net/std/ObsCore#radioExt-1.%'
+  AND EXISTS (select 1 from rr.res_table where
+    table_name LIKE '%obscore')
+\end{lstlisting}
+
+In the current status of the ObsCore specification the last statement in the WHERE clause
+is the simplest one to ensure the service also delivers the main obscore table. 
+In the future  this statement could be replaced   by 
+\begin{lstlisting}
+ AND EXISTS (select 1 from rr.res_table where
+    table_utype LIKE 'ivo://ivoa.net/std/obscore#core-1.%')
+\end{lstlisting}
+ 
+When we will have other extensions (for example for time) we may want to 
+discover services which deliver several extensions in addition to obscore 
+main table.
+
+This could be done by queries such as  
+
+\begin{lstlisting}
+SELECT DISTINCT(access_url), table_name
+FROM rr.res_table
+  NATURAL JOIN rr.capability
+  NATURAL JOIN rr.interface
+WHERE
+  standard_id LIKE 'ivo://ivoa.net/std/tap%'
+  AND intf_role='std'
+  AND table_utype LIKE 'ivo://ivoa.net/std/ObsCore#radioExt-1.%'
+  AND EXISTS (select 1 from rr.res_table where 
+       table_utype LIKE 'ivo://ivoa.net/std/ObsCore#timeExt-1.0'
+  AND EXISTS (select 1 from rr.res_table where
+    table_name LIKE '%obscore')
+\end{lstlisting}
+
+assuming that the standardID for the time extension currently in progress will be 
+$$
+\hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore#timeExt-1.0}}
+$$
+
+In addition the schema containing the ObsCore main table and potentially some of the  extensions
+SHOULD use the root ObsCore standardID utype :
+$$
+\hbox{\nolinkurl{ivo://ivoa.net/std/ObsCore}}
+$$
+
+
+in such a way that the query
+
+\begin{lstlisting}
+SELECT DISTINCT(access_url), table_name, schema_name
 FROM rr.res_table
 NATURAL JOIN rr.capability
 NATURAL JOIN rr.interface
@@ -709,23 +826,11 @@ NATURAL JOIN rr.res_schema
 WHERE
 standard_id LIKE 'ivo://ivoa.net/std/tap%'
 AND intf_role='std'
-AND table_name LIKE '%obs_radio'
-AND schema_name LIKE '%ivoa%'
+AND schema_utype LIKE 'ivo://ivoa.net/std/ObsCore'
 \end{lstlisting}
 
-%Alternatively the schema and tables can be discovered this way
+would allow to discover all services delivering ObsCore and which extension tables they deliver.
 
-%\begin{lstlisting}
-%SELECT DISTINCT(access_url), table_name, schema_name
-%FROM rr.res_table
-%NATURAL JOIN rr.capability
-%NATURAL JOIN rr.interface
-%NATURAL JOIN rr.res_schema
-%WHERE 
-%standard_id LIKE 'ivo://ivoa.net/std/tap%'
-%AND intf_role='std'
-%AND schema_utype LIKE 'ivo://ivoa.net/std/ObsCore#obscore-radioExt-%'
-%\end{lstlisting}
 
 \appendix
 
