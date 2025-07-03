@@ -24,7 +24,7 @@ III Scan mode is raster map or on-the-fly map
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
-NATURAL JOIN  ivoa.obscore-radio 
+NATURAL JOIN  ivoa.obscore_radio 
 WHERE
 s_resolution_min > 0.017 
  AND (target_name = 'Virgo A' OR
@@ -42,7 +42,7 @@ II Target IC443 or position inside 15 arcmin from 94.2500000,+22.5699997 \\
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
-NATURAL JOIN  ivoa.obscore-radio 
+NATURAL JOIN  ivoa.obscore_radio 
 WHERE s_resolution_max < 0.017 
 AND
  (target_name = 'IC443' OR
@@ -59,7 +59,7 @@ I. Minimum FOV > 0.8 deg \\
 II Target name = Abell 194 or position inside 15 arcmin from 21.5054167, -1.3672221 \\
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
-NATURAL JOIN  ivoa.obscore-radio 
+NATURAL JOIN  ivoa.obscore_radio 
 WHERE s_fov_min > 0.8 AND
 (target_name = 'Abell 194' OR
 CONTAINS(POINT(s_ra,s_dec),CIRCLE(21.5054167,-1.3672221,0.25)) = 1)) 
@@ -74,7 +74,7 @@ I. Target name = Pictor A \\
 II. The circle defined by the minimum FOV of the dataset fully contains the circle delimiting Pictor A. \\
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
-NATURAL JOIN  ivoa.obscore-radio 
+NATURAL JOIN  ivoa.obscore_radio 
 WHERE target_name = 'Pictor A' AND
 CONTAINS(CIRCLE(79.9571789, -45.7788479,(8/60)/2),
 CIRCLE(s_ra, s_dec, s_fov_min/2)) = 1)
@@ -92,7 +92,7 @@ V. 51544 < observation time (MJD) < 60309 \\
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
-NATURAL JOIN  ivoa.obscore-radio
+NATURAL JOIN  ivoa.obscore_radio
 WHERE obs_collection EQ 'INAF-Medicina, single dish' 
 AND (em_min >=20000 AND em_max <= 21000) 
 AND (dataproduct_type EQ 'spatial profile' OR scan_mode LIKE "*map*") 
@@ -112,7 +112,7 @@ III. em\_min and em\_max such than frequency bounds are included in the 1GHz to 
 \begin{verbatim}
 SELECT *, 299792458 / em_max as f_min,  299792458 / em_min as f_max 
 FROM ivoa.obscore 
-NATURAL JOIN  ivoa.obscore-radio
+NATURAL JOIN  ivoa.obscore_radio
 WHERE dataproduct_type = 'cube' AND
 f_resolution < 1000000 AND
 299792458 / em_max  > 1.0 e+9 AND
@@ -145,7 +145,7 @@ II. higher spectral limit < 1Ghz
 \textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102:}
 
 \begin{verbatim}
-SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obscore-radio
+SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obscore_radio
 WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458,33.14794,0.0003)) = 1 
 AND s_resolution_max < 0.001
 \end{verbatim}
@@ -157,7 +157,7 @@ be imaged with reasonable fidelity:}
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore 
-NATURAL JOIN ivoa.obscore-radio
+NATURAL JOIN ivoa.obscore_radio
 WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(24.4212500,33.1588889,0.003)) = 1 
 AND s_largest_angular_scale > 0.018 
 AND uv_distribution_fill > 0.2 
@@ -180,8 +180,6 @@ II. Target Name = Fornax Cluster \\
       AND target_name = 'Fornax cluster'
 \end{verbatim}
 
-
-
 \subsection{Use case - maximum angular scale selection}
 \textit{Any visibility dataset Within an arcec around FRB 121102  where  maximum angular scale is larger than 1 minute .}\\ \\
 Show me all datasets satisfying:\\
@@ -190,7 +188,7 @@ II. Maximum angular scale  >  0.018 deg \\
 III. Position within 1 arcsec of 82.99458 + 33.14794
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
-      NATURAL JOIN  ivoa.obscore-radio
+      NATURAL JOIN  ivoa.obscore_radio
       WHERE dataproduct_type = 'visibility' 
       AND s_largest_angular_scale_max  > 0.018 
       AND CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458, 33.14794,0.0003)) = 1))
@@ -207,7 +205,7 @@ IV. uv distribtion factor eccentricity  < 0.1 \\
 V. Position within 1 arcsec of 82.99458 + 33.14794
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
-      NATURAL JOIN  ivoa.obscore-radio
+      NATURAL JOIN  ivoa.obscore_radio
       WHERE dataproduct_type = 'visibilty' 
       AND s_largest_angular_scale_max > 0.018 
       AND uv_distribution_fill > 0.7 
@@ -225,7 +223,7 @@ IIV. maximal duration per sample  < 0.05 s \\
 
 \begin{verbatim}
        SELECT * FROM ivoa.obscore 
-      NATURAL JOIN  ivoa.obscore-radio
+      NATURAL JOIN  ivoa.obscore_radio
       WHERE instr_type = 'beamForming' 
       AND dataproduct_type = 'timeseries' 
       AND t_resolution < 0.1 AND
@@ -242,7 +240,7 @@ III. Target name = 3C 273 or \\
 IV. position inside 3 arcmin around  	187.2779159404900 +02.0523882305500
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
-      NATURAL JOIN  ivoa.obscore-radio
+      NATURAL JOIN  ivoa.obscore_radio
       WHERE instr_type = 'SD' 
       AND scan_mode = 'raster' 
       AND (target_name = '3C 273' OR
@@ -261,7 +259,7 @@ IV. position inside 18 arcmin around 194.93502 +27.91246
 
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
-      NATURAL JOIN  ivoa.obscore-radio
+      NATURAL JOIN  ivoa.obscore_radio
       WHERE (instr_type = 'SD' OR
       instr_type = 'beamForming') 
       AND 299792458 / em_max > 500 
@@ -279,7 +277,7 @@ II. number of antennae > 40 \\
 III. antenna maximum distance in meters  > 5000 \\
 
 \begin{verbatim}
-      SELECT * FROM ivoa.obscore-radio
+      SELECT * FROM ivoa.obscore_radio
       WHERE instr_type = 'interferometry' 
       AND instr_tel_number > 40 
       AND instr_tel_max_dist > 5000 
