@@ -460,13 +460,14 @@ observations fixed on a given elevation and azimuth.
 %In addition the wobble mode observes both the source and the surrounding background. 
 The ObsLocTAP specification \citep{2021ivoa.spec.0724S} defines the term 
 \emph{tracking\_type} for describing this as well as a  vocabulary for 
-these modes. We include the same term here in the extension. The two 
+these modes. We include the same terms here in the present extension. The  
 possible values for radio astronomy data are the following:
 \begin{itemize}
 	\item \texttt{sidereal} : observations pointed on a fixed target, as defined in 
 		ObsLocTAP
 	\item \texttt{fixed-az-el-transit} : observations fixed on a given elevation 
 		and azimuth, as in ObsLocTAP
+	\item Solar-system-object-tracking : moving target, like moon or solar bodies
 %	\item Wobble : observations measuring both the source and the surroundings	
 \end{itemize}
 
@@ -582,7 +583,7 @@ WHERE
 \sptablerule
 \texttt{s\_fov\_max}&\texttt{field of view diameter, max value, min frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg\cr
 \sptablerule
-\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Khz\cr
+\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&KHz\cr
 \sptablerule
 \caption{ObsCore extension proposal for radio data in general.}
 \label{tab:ExtensionAtt}
