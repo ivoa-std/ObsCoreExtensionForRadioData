@@ -457,7 +457,7 @@ possible values for radio astronomy data are the following:
 \begin{itemize}
 	\item \texttt{sidereal} : observations pointed on a fixed target, as defined in 
 		ObsLocTAP
-	\item \texttt{fixed-az-el} : observations fixed on a given elevation 
+	\item \texttt{fixed-az-el-transit} : observations fixed on a given elevation 
 		and azimuth, as in ObsLocTAP
 	\item Solar-system-object-tracking : moving target, like moon or solar bodies
 %	\item Wobble : observations measuring both the source and the surroundings	
@@ -573,7 +573,7 @@ WHERE [constraints]
 \sptablerule
 \texttt{s\_fov\_max}&\texttt{field of view diameter, max value, min frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg\cr
 \sptablerule
-\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&KHz\cr
+\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&kHz\cr
 \sptablerule
 \caption{ObsCore extension proposal for radio data in general.}
 \label{tab:ExtensionAtt}
