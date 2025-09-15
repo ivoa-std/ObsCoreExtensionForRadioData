@@ -452,13 +452,14 @@ observations fixed on a given elevation and azimuth.
 %In addition the wobble mode observes both the source and the surrounding background. 
 The ObsLocTAP specification \citep{2021ivoa.spec.0724S} defines the term 
 \emph{tracking\_type} for describing this as well as a  vocabulary for 
-these modes. We include the same term here in the extension. The two 
+these modes. We include the same terms here in the present extension. The  
 possible values for radio astronomy data are the following:
 \begin{itemize}
 	\item \texttt{sidereal} : observations pointed on a fixed target, as defined in 
 		ObsLocTAP
 	\item \texttt{fixed-az-el} : observations fixed on a given elevation 
 		and azimuth, as in ObsLocTAP
+	\item Solar-system-object-tracking : moving target, like moon or solar bodies
 %	\item Wobble : observations measuring both the source and the surroundings	
 \end{itemize}
 
@@ -560,21 +561,21 @@ WHERE [constraints]
 %first table 
         
 \begin{landscape}
-\begin{longtable}{l p{4.5cm}| p{4cm}| l l |}
-\hline
-\textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}\\
-\hline
-\texttt{ s\_resolution\_min}&\texttt{ Angular resolution, \newline longest baseline and \newline  max frequency dependent}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.angResolution;stat.min}&{arcsec}\\
-\hline
-\texttt{s\_resolution\_max}&\texttt{Angular resolution, \newline longest baseline and \newline min frequency dependent}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.angResolution;stat.max}&arcsec \\
-\hline
-\texttt{s\_fov\_min}&\texttt{field of view diameter, \newline min value, \newline max frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.LowLim}&{phys.angSize;instr.fov;\newline stat.min}&deg\\
-\hline
-\texttt{s\_fov\_max}&\texttt{field of view diameter, \newline max value, \newline min frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg\\
-\hline
-\texttt{f\_resolution}&\texttt{absolute spectral resolution\newline in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Khz\\
-\hline
-\caption{ObsCore extension columns proposal for radio data in general.}
+\begin{longtable}{ l p{4cm}| p{4cm}| l l |}
+\sptablerule
+\textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}\cr
+\sptablerule
+\texttt{ s\_resolution\_min}&\texttt{ Angular resolution, longest baseline and  max frequency dependent}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.angResolution;stat.min}&{arcsec}\cr
+\sptablerule
+\texttt{s\_resolution\_max}&\texttt{Angular resolution, longest baseline and min frequency dependent}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.angResolution;stat.max}&arcsec\cr
+\sptablerule
+\texttt{s\_fov\_min}&\texttt{field of view diameter, min value, max frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.LowLim}&{phys.angSize;instr.fov;\newline stat.min}&deg\cr
+\sptablerule
+\texttt{s\_fov\_max}&\texttt{field of view diameter, max value, min frequency dependent}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg\cr
+\sptablerule
+\texttt{f\_resolution}&\texttt{absolute spectral resolution in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&KHz\cr
+\sptablerule
+\caption{ObsCore extension proposal for radio data in general.}
 \label{tab:ExtensionAtt}
 \end{longtable}
 \end{landscape}
