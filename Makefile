@@ -12,7 +12,8 @@ DOCDATE = 2025-09-15
 DOCTYPE = PEN
 
 # I'm pretty sure only a single address will work with the doc repo
-AUTHOR_EMAIL=mireille.louys@unistra.fr
+# add the email address of the Radio IG chair or vice-chair  for contact continuity 
+AUTHOR_EMAIL=mireille.louys@unistra.fr, kettenis@jive.eu
 
 IVOA_GROUP = Data Model
 
