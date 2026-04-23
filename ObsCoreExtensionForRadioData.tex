@@ -229,17 +229,18 @@ Radio astronomers also check the quality of the visibility data by looking at so
 the data structure. The \emph{uv} coverage map can show how complete and regular is the sampling in
 the \emph{uv} plane and gives an hint of the resolution and maximum angular scale.
 The visualisation of the dirty beam, which is the Fourier transform of the \emph{uv} sampling
-function gives an hint of the intrinsic quality of possible reconstruction. As maps they are
-not queriable.\todo{I don't understand what ``queriable'' is supposed to mean here} So links to these kind of maps will not be exposed in the extension
-table but only via a DataLink service.
+function gives an hint of the intrinsic quality of possible reconstruction. These maps side products cannot be represented by an ObsDataset class from ObsCore, with spatial axis on the sky, due to their specific axes. 
+They can be accessed from the visibility data product via a DataLink service.  
+%\todo{I don't understand what ``queriable'' is supposed to mean here} 
+%So links to these kind of maps will not be exposed in the extension
+table but only via a DataLink service .
 
 If none of these \emph{uv} characterization features are available to be exposed in the service
 we can still predict ranges of some of those by using parameters of the instrumental configuration.
 Important features are the antenna diameter (or maximum antenna diameter), the number of
 antennas and the minimum and maximum distance between antennas of the array.
 
-
-In addition to these specificities most of the scan modes shown on figure~\ref{fig:SD} also
+In addition to these specificities, most of the scan modes shown on figure~\ref{fig:SD} also
 apply to some interferometry observations and should be described.
 
 \section{ObsCore attributes definition valid for radio data}
