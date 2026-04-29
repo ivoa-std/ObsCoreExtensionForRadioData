@@ -2,21 +2,21 @@
 \label{ADQLusecases}
 
 
-\textit{ The  queries in subsections \ref{sec:s_resolution_max} and \ref{sec:s_fov_min}
+The  queries in subsections \ref{sec:s_resolution_max} and \ref{sec:s_fov_min}
 can be run with s\_resolution\_min and s\_fov\_max instead of s\_resolution\_max and 
  s\_fov\_min respectively, to obtain results in which at least part of the dataset satisfy the condition.\\
 For instance, consider datasets with a large observed bandwidth, like those taken with wide/ultrawide band receivers.
-The condition s\_resolution\_max<d\_typical may not be satisfied. At the same time, the user may want to select those 
-dataset where the desired condition on spatial resolution is matched at least partially  within the observed band.}
+The condition s\_resolution\_max < d\_typical, where d\_typical is the typical size of interest, may not be satisfied. At the same time, the user may want to select those 
+dataset where the desired condition on spatial resolution is matched at least partially  within the observed band.
 
-\textit{Sections from \ref{sec:instrument-mode} illustrate instrument and observing modes parameters. They must  be completed by science cases.}
+Sections from \ref{sec:instrument-mode} illustrate instrument and observing modes parameters.
 
 %\subsection{Science case }
 \subsection{Use case - s\_resolution\_min}
 \label{sec:s_resolution_min}
 \textit{Comparative study of low surface brightness extended emission surrounding compact sources, like for instance Virgo A.
 In order to avoid washing out of diffuse emission the spatial resolution should not be too high.
-Select any dataset map (raster or on-the-fly) with s\_resolution\_min larger than the desired spatial resolution of 1 arcmin.}
+Select any dataset map (raster or on-the-fly) with s\_resolution\_min larger than the desired spatial resolution of 1 arcmin.}\\
 Show me all datasets satisfying: \\
 I. Minimum spatial resolution > 0.017 deg \\
 II Target Virgo A or position inside 15 arcmin from 187.7059308,+12.3911232 \\
@@ -34,11 +34,11 @@ AND  (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
 
 \subsection{Use case - s\_resolution\_max}
 \label{sec:s_resolution_max}
-\textit{Morphological study of SNR IC443. Select any dataset obtained in map scanning mode (raster or on-the-fly) with s\_resolution\_max less than the desired spatial resolution of 1 arcmin.}
-
+\textit{Morphological study of SNR IC443. \\
+Select any dataset obtained in map scanning mode (raster or on-the-fly) with s\_resolution\_max less than the desired spatial resolution of 1 arcmin.}\\
 Show me all datasets satisfying: \\
 I. Maximum spatial resolution < 0.017 deg \\
-II Target IC443 or position inside 15 arcmin from 94.2500000,+22.5699997 \\
+II. Target IC443 or position inside 15 arcmin from 94.2500000,+22.5699997 
 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
@@ -56,7 +56,7 @@ AND (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
 
 Show me all datasets satisfying:\\
 I. Minimum FOV > 0.8 deg \\
-II Target name = Abell 194 or position inside 15 arcmin from 21.5054167, -1.3672221 \\
+II. Target name = Abell 194 or position inside 15 arcmin from 21.5054167, -1.3672221 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore_radio 
@@ -68,10 +68,10 @@ AND (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
 
 \subsection{Use case - s\_fov\_min - extended target completly included}
 \label{sec:s_fov_max}
-\textit{Pictor A has a typical angular extension  of 8 arcminutes , select any image/cube completely containing the target}
+\textit{Pictor A has a typical angular extension  of 8 arcminutes, select any image/cube completely containing the target}.\\
 Show me all datasets satisfying: \\
 I. Target name = Pictor A \\
-II. The circle defined by the minimum FOV of the dataset fully contains the circle delimiting Pictor A. \\
+II. The circle defined by the minimum FOV of the dataset fully contains the circle delimiting Pictor A. 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore_radio 
@@ -81,15 +81,13 @@ CIRCLE(s_ra, s_dec, s_fov_min/2)) = 1)
 \end{verbatim}
 
 \subsection{Use case - dataproduct\_type}
-\textit{Select all observations of calibrator source 3C48 with the Medicina Grueff radio telescope at frequencies in the range 20-21 GHz, to investigate its flux variability (light curve) in the years 2000-2023}
+\textit{Select all observations of calibrator source 3C48 with the Medicina Grueff radio telescope at frequencies in the range 20-21 GHz, to investigate its flux variability (light curve) in the years 2000-2023}.\\
 Show me all datasets satisfying: \\
-I. Target name = 3C 48 \\
-II. obs\_collection = ?INAF-Medicina, single dish?\\
+I. Target name = 3C48 \\
+II. obs\_collection = "INAF-Medicina, single dish"\\
 III. Observed frequency in the range 20-21 GHz \\
 IV. dataproduct\_type = spatial\_profile or scan\_mode contains map\\
-V. 51544 < observation time (MJD) < 60309 \\
-
-
+V. 51544 < observation time (MJD) < 60309 
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore_radio
@@ -120,19 +118,17 @@ f_resolution < 1000000 AND
 \end{verbatim}
 
 \subsection{Use case - frequency selection  for images }
-\textit{Any image or cube observed at frequencies below 1 GHz.}\\ \\
+\textit{Any image or cube observed at frequencies below 1 GHz.}\\ 
 Show me all datasets satisfying:\\
 I. Product type is image or cube \\
-II. higher spectral limit < 1Ghz
+II. Higher spectral limit < 1 GHz
 \begin{verbatim}
       SELECT * FROM ivoa.obscore
       WHERE (dataproduct_type = 'image' 
       OR  dataproduct_type = 'cube') 
       AND 299792458 / em_min  < 1e9
 \end{verbatim}
-% Mireille Louys: shall we also look for spectra with these frequency constrains ? 
-
-
+% Mireille Louys: shall we also look for spectra with these frequency constrains ?
  
 % end section Alexandra's science case
 
@@ -142,8 +138,10 @@ II. higher spectral limit < 1Ghz
 % Should these restrict the dataproduct_type?
 \subsection{Use case - high resolution data around FRB targets }
 
-\textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102:}
-
+\textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102.} \\ Show me all datasets satisfying: 
+% add constraints 
+I. Source close to FRB 121102 \\
+II. Spatial resolution <  1 arcsec
 \begin{verbatim}
 SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obscore_radio
 WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458,33.14794,0.0003)) = 1 
@@ -153,13 +151,17 @@ AND s_resolution_max < 0.001
 \subsection{Use case - reasonable fidelity}
 
 \textit{Give me data on extended HI emission around the source 3C84 that can
-be imaged with reasonable fidelity:}
-
+be imaged with reasonable fidelity.}\\ Show me all datasets satisfying: 
+%add constraints 
+I. Region contains source 3C84  \\
+II. Maximum angular scale > 1arcsec 
+III. uv plane is filled at more than 0.2
+IV. Estimated uv eccentricity < 0.75
 \begin{verbatim}
 SELECT * FROM ivoa.obscore 
 NATURAL JOIN ivoa.obscore_radio
 WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(24.4212500,33.1588889,0.003)) = 1 
-AND s_largest_angular_scale > 0.018 
+AND s_largest_angular_scale > 0.017
 AND uv_distribution_fill > 0.2 
 AND uv_distribution_ecc < 0.75 
 AND em_min < 0.21 
@@ -168,12 +170,12 @@ AND em_max > 0.21
 
 % end of Mark's (VLBI) science cases
 
-\subsection{ use case - visibility data product and target object selection }
+\subsection{ Use case - visibility data product and target object selection }
 \textit{Any raw interferometry observation containing target Fornax cluster.}\\
 \\
 Show me all  observation identifiers satisfying:\\
 I. DataType = visibility \\
-II. Target Name = Fornax Cluster \\
+II. Target Name = Fornax Cluster
 \begin{verbatim}
       SELECT obs_id FROM ivoa.obscore
       WHERE dataproduct_type = 'visibility' 
@@ -181,33 +183,33 @@ II. Target Name = Fornax Cluster \\
 \end{verbatim}
 
 \subsection{Use case - maximum angular scale selection}
-\textit{Any visibility dataset Within an arcec around FRB 121102  where  maximum angular scale is larger than 1 minute .}\\ \\
+\textit{Any visibility dataset within an arsec around FRB 121102  where  maximum angular scale is larger than 1 minute.}\\ \\
 Show me all datasets satisfying:\\
 I. Product type is visibility \\
-II. Maximum angular scale  >  0.018 deg \\
+II. Maximum angular scale  >  0.017 deg \\
 III. Position within 1 arcsec of 82.99458 + 33.14794
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
       NATURAL JOIN  ivoa.obscore_radio
       WHERE dataproduct_type = 'visibility' 
-      AND s_largest_angular_scale_max  > 0.018 
+      AND s_largest_angular_scale_max  > 0.017 
       AND CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458, 33.14794,0.0003)) = 1))
 \end{verbatim}
 
 \subsection{Use case - maximum angular scale selection with reasonable fidelity}
-\textit{Any visibility data within an arcsec around FRB 121102 where  maximum angular scale is larger than 1 minute  and 
-of good quality from the uv distribution point of view.}\\ \\
+\textit{Any visibility data within an arcsec around FRB 121102 where  maximum angular scale is larger than 1 minute  and of good quality from the uv distribution point of view.}\\ \\
 Show me all datasets satisfying:\\
 I. Product type = visibility \\
-II. Maximum angular scale  >  0.018 deg \\
+II. Maximum angular scale  >  0.017 deg \\
 III. uv distribution filling factor  > 0.7 \\
-IV. uv distribtion factor eccentricity  < 0.1 \\
+IV. uv distribution factor eccentricity  < 0.1 \\
 V. Position within 1 arcsec of 82.99458 + 33.14794
+
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
       NATURAL JOIN  ivoa.obscore_radio
       WHERE dataproduct_type = 'visibilty' 
-      AND s_largest_angular_scale_max > 0.018 
+      AND s_largest_angular_scale_max > 0.017
       AND uv_distribution_fill > 0.7 
       AND uv_distribution_ecc < 0.1  
       AND CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458, 33.14794,0.0003)) =1))
@@ -219,10 +221,10 @@ Show me all datasets satisfying:\\
 I. Instrument type = beam forming\\
 II. Product type = time series  \\
 III. time resolution < 0.1 s\\
-IIV. maximal duration per sample  < 0.05 s \\
+IIV. maximal duration per sample  < 0.05 s 
 
 \begin{verbatim}
-       SELECT * FROM ivoa.obscore 
+      SELECT * FROM ivoa.obscore 
       NATURAL JOIN  ivoa.obscore_radio
       WHERE instr_type = 'beamForming' 
       AND dataproduct_type = 'timeseries' 
@@ -237,24 +239,24 @@ Show me all datasets satisfying:\\
 I. Instrument type is Single dish \\
 II. Scan mode is raster \\
 III. Target name = 3C 273 or \\
-IV. position inside 3 arcmin around  	187.2779159404900 +02.0523882305500
+IV. position inside 3 arcmin around 187.2779159404900 +02.0523882305500
+
 \begin{verbatim}
       SELECT * FROM ivoa.obscore 
       NATURAL JOIN  ivoa.obscore_radio
       WHERE instr_type = 'SD' 
       AND scan_mode = 'raster' 
       AND (target_name = '3C 273' OR
-       CONTAINS(POINT(s_ra,s_dec), CIRCLE(187.2779159404900, +02.0523882305500,0.05)) = 1)     
+      CONTAINS(POINT(s_ra,s_dec), CIRCLE(187.2779159404900, +02.0523882305500,0.05)) = 1)     
 \end{verbatim}
-
 
 
 \subsection{Use case - instrument type and frequency selection }
 \textit{Any single dish or beam forming dataset  with spectral range inside the 500 Mhz - 1Ghz band and in the Coma Cluster.}\\ \\
 Show me all datasets satisfying:\\
 I. Instrument type is Single dish or beam forming \\
-II. lower spectral limit > 500 Mhz \\
-III. higher spectral limit < 1Ghz \\
+II. lower spectral limit > 500 MHz \\
+III. higher spectral limit < 1GHz \\
 IV. position inside 18 arcmin around 194.93502 +27.91246
 
 \begin{verbatim}
@@ -270,12 +272,11 @@ IV. position inside 18 arcmin around 194.93502 +27.91246
 
 
 \subsection{Use case - instrument parameters selection }
-\textit{Any interferometry data of good quality and significant spatial resolution from the instrumental point of view. }\\ \\
+\textit{Any interferometry data of good quality and significant spatial resolution from the instrumental point of view. }\\ 
 Show me all datasets satisfying:\\
 I. Instrument type = visibility \\
 II. number of antennae > 40 \\
-III. antenna maximum distance in meters  > 5000 \\
-
+III. antenna maximum distance in meters  > 5000 
 \begin{verbatim}
       SELECT * FROM ivoa.obscore_radio
       WHERE instr_type = 'interferometry' 

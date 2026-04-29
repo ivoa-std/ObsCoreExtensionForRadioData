@@ -7,7 +7,7 @@ DOCNAME = ObsCoreExtensionForRadioData
 DOCVERSION = 1.0
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2025-09-15
+DOCDATE = 2026-04-29
 # What is it you're writing: NOTE, WD, PR, or REC
 DOCTYPE = PEN
 
