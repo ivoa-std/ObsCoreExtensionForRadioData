@@ -134,10 +134,10 @@ Similarly, the resolution power quantity, commonly provided to describe optical 
 Instead one could introduce a new ObsCore element for the absolute spectral resolution, in frequency unit, for which a representative value for each observation can be given.
 
 Modern radio instrumentation offers the possibility of several  spectral windows within the same observation with significant separation or different resolutions.
-Such observations may be represented at the highest granularity as  a set of combined data sets represented by several entries in an ObsCore table. However it is up to the data provider to decide which level of granularity is best adapted in order to optimize data discoverability and thus ease data access, depending on the scientific content of the observation.
-%(see Sect. \ref{sec:sd} for an example).
-
-
+Such observations may be represented at the highest granularity as  a set of combined data sets represented by several entries in an ObsCore table.
+However, it is up to data provider to decide which level of granularity is best adapted in order to optimize data discoverability and ease data access, 
+depending on the scientific content of the observation.
+%(see Sect.~\ref{sec:sd} for an example).
 
 \subsection{Single dish data}
 \label{sec:sd}
@@ -308,9 +308,11 @@ will be computed for each source and written in the appropriate ObsCore Table en
 
 
 \subsection{t\_resolution}
-%Not applicable for single dish data (see Sect. \ref{sec:sd}).
-The ObsCore parameter \emph{t\_resolution} (see Sect~\ref{sec:sd}) has a limited application for SD data
-except for \texttt{on-source} tracking observations like those for pulsar/FRB studies and could be set equal to the 
+
+%Not applicable for single dish data (see Sect.\ref{subsec:sd}).
+The ObsCore parameter \emph{t\_resolution} (see Sect.\ref{sec:sd}) has limited applicability to SD data
+except for \texttt{on-source} tracking observations like those for pulsar/FRB studies and could be set to the
+
 exposure time or could be NULL. For time-domain data, \emph{t\_resolution} can be set according to the Pulsar
 and FRB Radio Data Discovery and Access IVOA Note \footnote{\url{https://wiki.ivoa.net/internal/IVOA/RadioastronomyInterestGroupFifthVirtualMeeting/PulsarRadioDataAccess.pdf}}.
 %% add citation here when doc is available on ivoa.net/Documents
@@ -331,19 +333,19 @@ These terms can be added to the current product-type vocabulary \footnote{https:
 
 \section{ObsCore extension specific for radio data}
 
-Tables \ref{tab:ExtensionAtt}, \ref{tab:ExtensionAtt_interferometry} and \ref{tab:ExtensionAtt_instrumental} show the
+Tables~\ref{tab:ExtensionAtt}, ~\ref{tab:ExtensionAtt_interferometry} and ~\ref{tab:ExtensionAtt_instrumental} show the
 querying parameters we propose to include into the ObsCore radio extension table in order to better describe radio single dish and visibility data.
 %Change Mir june 2025 . the 3 tables sort the various medata by category: general, interferometry and instrumental. The last column indicates if the attribute is useful for all radio datasets or only for visibilities, beam forming, or single dish data.
 
 \subsection{Spatial parameters}
 
-For extended spectral range datasets \emph{s\_fov\_min, s\_fov\_max} are estimated like in the typical value case (see subsection \ref{sec:fov}).
+For extended spectral range datasets \emph{s\_fov\_min, s\_fov\_max} are estimated like in the typical value case (see subsection ~\ref{sec:fov}).
 In the case of SD pointed observations with mono-feed receivers and the majority of interferometric observations the minimum and maximum
 $\lambda$ values in the spectral range(s) will be used in the formula  $\lambda / D$ to estimate respectively \emph{s\_fov\_min} and  \emph{s\_fov\_max}. \\
 In the case of mapping scans or multi-feed/PAF receivers \emph{ s\_fov\_min} and \emph{s\_fov\_max} are derived as the minimum and maximum sizes of the
 circular region encompassing the covered area.
 
-\emph{s\_resolution\_min, s\_resolution\_max} are estimated like the typical value by the formula  $\lambda / L$  (see subsection \ref{sec:res}) where $\lambda$ is replaced respectively by the minimum and maximum wavelength of the spectral range(s). The size L is the telescope diameter for SD observations and the largest distance in the \emph{uv} plane for interferometry. Beam forming may represent an exception to this rule, see sect.~\ref{sec:res}.
+\emph{s\_resolution\_min, s\_resolution\_max} are estimated like the typical value by the formula  $\lambda / L$  (see subsection ~\ref{sec:res}) where $\lambda$ is replaced respectively by the minimum and maximum wavelength of the spectral range(s). The size L is the telescope diameter for SD observations and the largest distance in the \emph{uv} plane for interferometry. Beam forming may represent an exception to this rule, see Sect.~\ref{sec:res}.
 
 In the case of interferometry, we introduce the new \emph{s\_largest\_angular\_scale} which is estimated as $\lambda/l$ where $\lambda$ is the typical
 wavelength (and again typical value SHOULD be estimated as the mid value of the spectral range apart from documented exceptions) and l is the typical smallest distance in the \emph{uv} plane. 
@@ -354,14 +356,16 @@ Thus it is best described using \emph{s\_largest\_angular\_scale\_min} and
 
 \subsection{Frequency characterization}
 
-As was stated above (\ref{sec:specificities}) radio astronomers use frequency quantities to characterize their datasets. Therefore we introduce one additional parameter in the extension : 
-%\emph{f\_min} and \emph{f\_max} for spectral ranges and 
-\emph{f\_resolution} for the absolute spectral resolution which, in the radio domain  is a more representative parameter.
+
+As was stated above (Sect~\ref{sec:specificities}) radio astronomers use frequency quantities to characterize their datasets. 
+Therefore we introduce one additional parameter in the extension:
+%\emph{f\_min} and \emph{f\_max} for spectral ranges and
+\emph{f\_resolution} for absolute spectral resolution, which is a more stable parameter than the resolution power in the radio domain.
 
 For users willing to access spectral ranges in frequencies we can imagine several scenarios:
 \begin{itemize}
 	\item compute two free parameters \emph{f\_min} and \emph{f\_max} this way \emph{f\_min} = c / \emph{em\_max} and \emph{f\_max} = c / \emph{em\_min} with c = 299 792 458 m/s
-	\item express queries and results in terms of frequencies by using the same  formulae in the ADQL queries (see \ref{sec:FreqRanges})
+	\item express queries and results in terms of frequencies by using the same  formulae in the ADQL queries (see ~\ref{sec:FreqRanges})
 	\item let the interface do these conversions 	
 \end{itemize}
 
@@ -439,7 +443,8 @@ for definitions).
 We note that \emph{instr\_feed} could also  account for the number of beams in the case of a beam forming/PAF receiver.
 
 The scanning strategy adopted in an observation is described by the parameter \emph{scan\_mode}. This parameter covers both spatial
-and frequency scanning modes (see Sect~\ref{sec:sd} for details and table~\ref{tab:scanmode} for possible values).
+and frequency scanning modes (see Sect.~\ref{sec:sd} for details and Table~\ref{tab:scanmode} for possible values).
+
 It is applicable to  SD as well as to interferometry cases.
 
 
@@ -532,7 +537,7 @@ with this specification.
 
 %However, in order to allow for later evolution -- which may allow
 %multiple compliant tables per service --, this name should not be used
-%for discovery (see sect.~\ref{sec:registry}).
+%for discovery (see Sect.~\ref{sec:registry}).
 
 A TAP service that has \verb|ivoa.obscore_radio| must also have a table
 compliant to any version 1 of ObsCore, i.e., a table
