@@ -25,11 +25,10 @@ III Scan mode is raster map or on-the-fly map
 \begin{verbatim}
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore_radio 
-WHERE
-s_resolution_min > 0.017 
- AND (target_name = 'Virgo A' OR
+WHERE s_resolution_min > 0.017 
+AND (target_name = 'Virgo A' OR
 CONTAINS(POINT(s_ra, s_dec),CIRCLE,187.7059308,+12.3911232,0.25)) = 1)) 
-AND  (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
+AND (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
 \end{verbatim}
 
 \subsection{Use case - s\_resolution\_max}
@@ -44,16 +43,14 @@ II. Target IC443 or position inside 15 arcmin from 94.2500000,+22.5699997
 SELECT * FROM ivoa.obscore
 NATURAL JOIN  ivoa.obscore_radio 
 WHERE s_resolution_max < 0.017 
-AND
- (target_name = 'IC443' OR
+AND (target_name = 'IC443' OR
 CONTAINS(POINT(s_ra,s_dec),CIRCLE(94.2500000,+22.5699997,0.25)) = 1)) 
 AND (scan_mode = 'raster map' OR scan_mode = 'on-the-fly map')
 \end{verbatim}
 
 \subsection{Use case - s\_fov\_min - large field of views}
 \label{sec:s_fov_min}
-\textit{Select any dataset obtained in map scanning mode (raster or on-the-fly) with minimum field of view larger than 0.8 degree. For instance, investigate the region surrounding cluster Abell 194.}
-
+\textit{Select any dataset obtained in map scanning mode (raster or on-the-fly) with minimum field of view larger than 0.8 degree. For instance, investigate the region surrounding cluster Abell 194.}\\
 Show me all datasets satisfying:\\
 I. Minimum FOV > 0.8 deg \\
 II. Target name = Abell 194 or position inside 15 arcmin from 21.5054167, -1.3672221 
@@ -138,12 +135,13 @@ II. Higher spectral limit < 1 GHz
 % Should these restrict the dataproduct_type?
 \subsection{Use case - high resolution data around FRB targets }
 
-\textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102.} \\ Show me all datasets satisfying: 
+\textit{Give me high-resolution data on possible persistent radio sources within an arc second of FRB 121102.} \\ Show me all datasets satisfying: \\
 % add constraints 
 I. Source close to FRB 121102 \\
 II. Spatial resolution <  1 arcsec
 \begin{verbatim}
-SELECT * FROM ivoa.obscore NATURAL JOIN ivoa.obscore_radio
+SELECT * FROM ivoa.obscore 
+NATURAL JOIN ivoa.obscore_radio
 WHERE CONTAINS(POINT(s_ra,s_dec),CIRCLE(82.99458,33.14794,0.0003)) = 1 
 AND s_resolution_max < 0.001
 \end{verbatim}
@@ -151,11 +149,12 @@ AND s_resolution_max < 0.001
 \subsection{Use case - reasonable fidelity}
 
 \textit{Give me data on extended HI emission around the source 3C84 that can
-be imaged with reasonable fidelity.}\\ Show me all datasets satisfying: 
+be imaged with reasonable fidelity.}\\ 
+Show me all datasets satisfying: \\
 %add constraints 
 I. Region contains source 3C84  \\
-II. Maximum angular scale > 1arcsec 
-III. uv plane is filled at more than 0.2
+II. Maximum angular scale > 1arcsec \\
+III. uv plane is filled at more than 0.2\\
 IV. Estimated uv eccentricity < 0.75
 \begin{verbatim}
 SELECT * FROM ivoa.obscore 

@@ -110,7 +110,7 @@ to allow data providers to improve the description of their radio data within th
 Its goal is to clarify how  ObsCore metadata  can be used in the  radio context and to add new specific features to the existing ObsCore metadata.
 
 
-\section{Radio data specifities from the Data Discovery point of view}
+\section{Radio data specificities from the Data Discovery point of view}
 \label{sec:specificities}
 
 
@@ -186,8 +186,8 @@ representation of the observed sky. They can be processed to obtain
 interferometric images through inverse Fourier algorithms. Each visibility measurement
 corresponds to an interferometric fringe system on the sky.
 
-The imaging algorithms include a possibility to set the center of the
-reconstructed image, setting this direction as a phase reference. Visibilities
+The imaging algorithms include a calibration step that requires fixing the
+center of the reconstructed image as a phase reference. Visibilities
 are usually represented in a spatial frequency plane, called the \emph{uv} plane,
 whose orientation is perpendicular to phase reference direction. The instantaneous PSF
 (Point Spread Function) of an interferometer is the Fourier transform of all baselines
@@ -229,7 +229,7 @@ affect the reconstruction.
 
 Radio astronomers also check the quality of the visibility data by looking at some maps/plots derived from the observed quantities or of the observational parameters.
 The \emph{uv} coverage map can show how complete and regular is the sampling in
-the \emph{uv} plane and give an hint of resolution and maximum angular scale.
+the \emph{uv} plane and gives an hint of resolution and maximum angular scale.
 The visualisation of the dirty beam, which is the Fourier transform of the \emph{uv} sampling
 function gives an hint of the intrinsic quality of possible reconstruction. 
 These maps side products cannot be represented by an ObsDataset class from ObsCore, with spatial axis on the sky, 
@@ -241,7 +241,7 @@ to facilitate data discovery.  For instance important features are the antenna d
 (or maximum antenna diameter), the number of
 antennas and the minimum and maximum distance between antennas in the array.
 
-In addition to these specifities most of the scan modes shown in Fig. ~\ref{fig:SD} also
+In addition to these specificities most of the scan modes shown in Fig. ~\ref{fig:SD} also
 apply to some interferometry observations and should be described.
 
 \section{ObsCore attributes definition valid for radio data}
@@ -276,7 +276,7 @@ A typical value for  the size of the field of view is to be computed on the obse
 %mid value of the spectral range
 receiver nominal wavelength and D coincides with the telescope diameter (SD case) or with the largest diameter of the array antennae or telescopes (interferometric case).
 In interferometry, the correlator can also restrict the field of view depending on the trade-off set to build the signal. 
-Nominal wavelength SHOULD be taken as the mid value of the spectral range except if data providers have good reasons to propose another value which should be documented in the FIELD DESCRIPTION tag in that case. 
+Nominal wavelength SHOULD be taken as the mid value of the spectral range except if data providers have good reasons to propose another value. This should be documented in this column's description metadata.
 
 \subsection{s\_resolution}
 \label{sec:res}
@@ -339,7 +339,7 @@ querying parameters we propose to include into the ObsCore radio extension table
 
 \subsection{Spatial parameters}
 
-For extended spectral range datasets \emph{s\_fov\_min, s\_fov\_max} are estimated like in the typical value case (see subsection ~\ref{sec:fov}).
+For extended spectral range datasets \emph{s\_fov\_min, s\_fov\_max} are estimated like in the typical value case (see subsection ~\ref{sec:fov}).\\
 In the case of SD pointed observations with mono-feed receivers and the majority of interferometric observations the minimum and maximum
 $\lambda$ values in the spectral range(s) will be used in the formula  $\lambda / D$ to estimate respectively \emph{s\_fov\_min} and  \emph{s\_fov\_max}. \\
 In the case of mapping scans or multi-feed/PAF receivers \emph{ s\_fov\_min} and \emph{s\_fov\_max} are derived as the minimum and maximum sizes of the
