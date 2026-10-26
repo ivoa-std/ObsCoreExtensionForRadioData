@@ -15,7 +15,7 @@ DOCTYPE = PEN
 # add the email address of the Radio IG chair or vice-chair  for contact continuity 
 AUTHOR_EMAIL=mireille.louys@unistra.fr, kettenis@jive.eu
 
-IVOA_GROUP = Data Model
+IVOA_GROUP = Radio
 
 # Source files for the TeX document (but the main file must always
 # be called $(DOCNAME).tex
